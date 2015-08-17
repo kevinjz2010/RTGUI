@@ -96,16 +96,19 @@ rt_bool_t rtgui_container_dispatch_mouse_event(rtgui_container_t *container, str
     {
         struct rtgui_widget *w;
         w = rtgui_list_entry(node, struct rtgui_widget, sibling);
-        if (rtgui_rect_contains_point(&(w->extent),
-                                      event->x, event->y) == RT_EOK)
-        {
-            if ((old_focus != w) && RTGUI_WIDGET_IS_FOCUSABLE(w))
-                rtgui_widget_focus(w);
-            if (RTGUI_OBJECT(w)->event_handler &&
-                    RTGUI_OBJECT(w)->event_handler(RTGUI_OBJECT(w),
-                                                   (rtgui_event_t *)event) == RT_TRUE)
-                return RT_TRUE;
-        }
+				if(!RTGUI_WIDGET_IS_HIDE(w))
+				{			
+					if (rtgui_rect_contains_point(&(w->extent),
+																				event->x, event->y) == RT_EOK)
+					{
+							if ((old_focus != w) && RTGUI_WIDGET_IS_FOCUSABLE(w))
+									rtgui_widget_focus(w);
+							if (RTGUI_OBJECT(w)->event_handler &&
+											RTGUI_OBJECT(w)->event_handler(RTGUI_OBJECT(w),
+																										 (rtgui_event_t *)event) == RT_TRUE)
+									return RT_TRUE;
+					}
+				}
     }
 
     return RT_FALSE;
