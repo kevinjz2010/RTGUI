@@ -423,11 +423,7 @@ rt_err_t rtgui_server_post_event_sync(struct rtgui_event *event, rt_size_t size)
 
 struct rtgui_app* rtgui_get_server(void)
 {
-    rt_thread_t tid = rt_thread_find("rtgui");
-
-    if (tid == RT_NULL)
-        return RT_NULL;
-    return (struct rtgui_app*)tid->user_data;
+    return rtgui_server_app;
 }
 RTM_EXPORT(rtgui_get_server);
 
@@ -445,4 +441,3 @@ void rtgui_server_init(void)
     if (tid != RT_NULL)
         rt_thread_startup(tid);
 }
-
