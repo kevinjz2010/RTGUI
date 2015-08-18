@@ -649,7 +649,7 @@ void rtgui_textbox_set_value(rtgui_textbox_t *box, const char *text)
     rt_memcpy(box->text, text, rt_strlen(text) + 1);
 
     /* set current position */
-    box->position = rt_strlen(text);
+    box->position = rt_strlen(text) - box->first_pos;
 
     if (cshow)
     {
