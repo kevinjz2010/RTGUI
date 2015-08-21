@@ -139,13 +139,15 @@ static rt_bool_t rtgui_combobox_onmouse_button(struct rtgui_combobox *box, struc
 {
     struct rtgui_rect rect;
 
-    /* get widget rect */
-    rect = RTGUI_WIDGET(box)->extent;
+		if(RTGUI_WIDGET_IS_ENABLE(RTGUI_WIDGET(box)))
+		{
+			/* get widget rect */
+			rect = RTGUI_WIDGET(box)->extent;
 
-    /* move to the pull down button */
-    rect.x1 = rect.x2 - RTGUI_COMBOBOX_BUTTON_WIDTH;
-    if (rtgui_rect_contains_point(&rect, event->x, event->y) == RT_EOK)
-    {
+			/* move to the pull down button */
+			rect.x1 = rect.x2 - RTGUI_COMBOBOX_BUTTON_WIDTH;
+			if (rtgui_rect_contains_point(&rect, event->x, event->y) == RT_EOK)
+			{
         /* handle mouse button on pull down button */
         if (event->button & RTGUI_MOUSE_BUTTON_LEFT &&
                 event->button & RTGUI_MOUSE_BUTTON_DOWN)
@@ -198,7 +200,8 @@ static rt_bool_t rtgui_combobox_onmouse_button(struct rtgui_combobox *box, struc
         }
 
         return RT_TRUE;
-    }
+			}
+		}
 
     return RT_FALSE;
 }
