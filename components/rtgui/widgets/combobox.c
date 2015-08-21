@@ -182,10 +182,19 @@ static rt_bool_t rtgui_combobox_onmouse_button(struct rtgui_combobox *box, struc
 
                 rtgui_listbox_set_onitem(list, rtgui_combobox_pdwin_onitem);
                 rtgui_win_set_ondeactivate(box->pd_win, rtgui_combobox_pdwin_ondeactive);
+								rtgui_win_show(RTGUI_WIN(box->pd_win), RT_FALSE);
             }
-
-            /* show combo box pull down window */
-            rtgui_win_show(RTGUI_WIN(box->pd_win), RT_FALSE);
+						else
+						{
+							/* show combo box pull down window */
+							rect = RTGUI_WIDGET(box)->extent;
+							rect.y1 = rect.y2;
+							/* give it 5 pixels margin, or the last item won't get shown */
+							rect.y2 = rect.y1 + box->items_count * (2 + rtgui_theme_get_selected_height()) + 5;					
+							rtgui_win_show(RTGUI_WIN(box->pd_win), RT_FALSE);
+							rtgui_win_move(RTGUI_WIN(box->pd_win), rect.x1, rect.y1);						
+						}
+						
         }
 
         return RT_TRUE;
