@@ -139,13 +139,15 @@ static rt_bool_t rtgui_combobox_onmouse_button(struct rtgui_combobox *box, struc
 {
     struct rtgui_rect rect;
 
-    /* get widget rect */
-    rect = RTGUI_WIDGET(box)->extent;
+		if(RTGUI_WIDGET_IS_ENABLE(RTGUI_WIDGET(box)))
+		{
+			/* get widget rect */
+			rect = RTGUI_WIDGET(box)->extent;
 
-    /* move to the pull down button */
-    rect.x1 = rect.x2 - RTGUI_COMBOBOX_BUTTON_WIDTH;
-    if (rtgui_rect_contains_point(&rect, event->x, event->y) == RT_EOK)
-    {
+			/* move to the pull down button */
+			rect.x1 = rect.x2 - RTGUI_COMBOBOX_BUTTON_WIDTH;
+			if (rtgui_rect_contains_point(&rect, event->x, event->y) == RT_EOK)
+			{
         /* handle mouse button on pull down button */
         if (event->button & RTGUI_MOUSE_BUTTON_LEFT &&
                 event->button & RTGUI_MOUSE_BUTTON_DOWN)
@@ -182,14 +184,24 @@ static rt_bool_t rtgui_combobox_onmouse_button(struct rtgui_combobox *box, struc
 
                 rtgui_listbox_set_onitem(list, rtgui_combobox_pdwin_onitem);
                 rtgui_win_set_ondeactivate(box->pd_win, rtgui_combobox_pdwin_ondeactive);
+								rtgui_win_show(RTGUI_WIN(box->pd_win), RT_FALSE);
             }
-
-            /* show combo box pull down window */
-            rtgui_win_show(RTGUI_WIN(box->pd_win), RT_FALSE);
+						else
+						{
+							/* show combo box pull down window */
+							rect = RTGUI_WIDGET(box)->extent;
+							rect.y1 = rect.y2;
+							/* give it 5 pixels margin, or the last item won't get shown */
+							rect.y2 = rect.y1 + box->items_count * (2 + rtgui_theme_get_selected_height()) + 5;					
+							rtgui_win_show(RTGUI_WIN(box->pd_win), RT_FALSE);
+							rtgui_win_move(RTGUI_WIN(box->pd_win), rect.x1, rect.y1);						
+						}
+						
         }
 
         return RT_TRUE;
-    }
+			}
+		}
 
     return RT_FALSE;
 }

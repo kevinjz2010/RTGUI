@@ -13,7 +13,7 @@ struct rtgui_char_position _string_char_width(char *str, size_t len, size_t offs
     struct rtgui_char_position pos = {0, 0};
     unsigned char *pc;
 
-    RT_ASSERT(offset < len);
+    RT_ASSERT(offset <= len);
 
     pc = (unsigned char*)str;
 
