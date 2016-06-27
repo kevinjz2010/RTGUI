@@ -201,6 +201,10 @@ static rt_bool_t rtgui_textbox_onkey(struct rtgui_object *widget, rtgui_event_t 
             *c = c[chw];
         *c = '\0';
 	}
+	else if ( ekbd->key == RTGUIK_CLEAR )
+	{
+		rtgui_textbox_set_value(box, "");
+	}
 	else if (ekbd->key == RTGUIK_BACKSPACE)
 	{
 		/* delete front character */
